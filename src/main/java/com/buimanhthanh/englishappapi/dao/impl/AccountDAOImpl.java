@@ -4,10 +4,11 @@ import com.buimanhthanh.englishappapi.dao.AccountDAO;
 import com.buimanhthanh.englishappapi.dto.AccountDTO;
 import com.buimanhthanh.englishappapi.entity.Account;
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class AccountDAOImpl implements AccountDAO {
 
     @Autowired
-    private SessionFactory session;
+    private EntityManager entityManager;
 
     @Override
     public Optional<List<AccountDTO>> findAll() {
@@ -26,20 +27,20 @@ public class AccountDAOImpl implements AccountDAO {
 //
 //        TypedQuery<Account> allQuery = session.getCurrentSession().createQuery(all);
 //        return Optional.ofNullable(allQuery.getResultList());
-        return Optional.ofNullable(session.getCurrentSession().createQuery("select new com.buimanhthanh.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a", AccountDTO.class)
+        return Optional.ofNullable(entityManager.unwrap(Session.class).createQuery("select new com.buimanhthanh.englishappapi.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a", AccountDTO.class)
                 .getResultList());
     }
 
     @Override
     public Optional<AccountDTO> findOne(Integer id) {
-        return session.getCurrentSession().createQuery("select new com.buimanhthanh.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a where a.id =: i",AccountDTO.class)
+        return entityManager.unwrap(Session.class).createQuery("select new com.buimanhthanh.englishappapi.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a where a.id =: i",AccountDTO.class)
                 .setParameter("i",id).getResultList().stream().findFirst();
     }
 
     @Override
     public boolean saveOrUpdate(Account account) {
         try {
-            session.getCurrentSession().saveOrUpdate(account);
+            entityManager.unwrap(Session.class).saveOrUpdate(account);
             return true;
         }catch (HibernateException e){
             System.out.println("ERROR WHEN ADD ACCOUNT : " + e.getMessage());
@@ -54,7 +55,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public void delete(Integer id) {
-        session.getCurrentSession().createQuery("delete from Account a where a.id =: i").setParameter("i",id).executeUpdate();
+        entityManager.unwrap(Session.class).createQuery("delete from Account a where a.id =: i").setParameter("i",id).executeUpdate();
     }
 
     @Override

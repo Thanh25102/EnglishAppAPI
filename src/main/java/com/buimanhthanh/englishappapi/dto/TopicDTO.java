@@ -1,6 +1,5 @@
 package com.buimanhthanh.englishappapi.dto;
 
-import com.buimanhthanh.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
