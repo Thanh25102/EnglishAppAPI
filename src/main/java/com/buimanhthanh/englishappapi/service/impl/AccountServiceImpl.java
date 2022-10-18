@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService  {
 
     @Autowired
     private AccountDAO accountDAO;
@@ -52,4 +52,5 @@ public class AccountServiceImpl implements AccountService {
     public void delete(List<Integer> ids) {
         accountDAO.delete(ids);
     }
+
 }
