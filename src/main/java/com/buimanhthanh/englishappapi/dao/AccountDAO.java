@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountDAO {
+
+    Optional<AccountDTO> getAccountByUsername(String username);
     Optional<List<AccountDTO>> findAll();
     Optional<AccountDTO> findOne(Integer id);
     boolean saveOrUpdate(Account account);

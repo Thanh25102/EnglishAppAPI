@@ -19,6 +19,13 @@ public class AccountDAOImpl implements AccountDAO {
     private EntityManager entityManager;
 
     @Override
+    public Optional<AccountDTO> getAccountByUsername(String username) {
+        return entityManager.unwrap(Session.class).createQuery("select new com.buimanhthanh.englishappapi.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a where a.username =: u", AccountDTO.class)
+                .setParameter("u", username)
+                .getResultList().stream().findFirst();
+    }
+
+    @Override
     public Optional<List<AccountDTO>> findAll() {
 //        CriteriaBuilder cb = session.getCurrentSession().getCriteriaBuilder();
 //        CriteriaQuery<Account> cq = cb.createQuery(Account.class);
@@ -33,8 +40,8 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public Optional<AccountDTO> findOne(Integer id) {
-        return entityManager.unwrap(Session.class).createQuery("select new com.buimanhthanh.englishappapi.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a where a.id =: i",AccountDTO.class)
-                .setParameter("i",id).getResultList().stream().findFirst();
+        return entityManager.unwrap(Session.class).createQuery("select new com.buimanhthanh.englishappapi.dto.AccountDTO(a.id,a.username,a.password,a.fullName,a.email) from Account a where a.id =: i", AccountDTO.class)
+                .setParameter("i", id).getResultList().stream().findFirst();
     }
 
     @Override
@@ -42,7 +49,7 @@ public class AccountDAOImpl implements AccountDAO {
         try {
             entityManager.unwrap(Session.class).saveOrUpdate(account);
             return true;
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             System.out.println("ERROR WHEN ADD ACCOUNT : " + e.getMessage());
         }
         return false;
@@ -55,7 +62,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public void delete(Integer id) {
-        entityManager.unwrap(Session.class).createQuery("delete from Account a where a.id =: i").setParameter("i",id).executeUpdate();
+        entityManager.unwrap(Session.class).createQuery("delete from Account a where a.id =: i").setParameter("i", id).executeUpdate();
     }
 
     @Override

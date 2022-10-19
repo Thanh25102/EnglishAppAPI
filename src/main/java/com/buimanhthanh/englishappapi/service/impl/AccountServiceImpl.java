@@ -18,6 +18,11 @@ public class AccountServiceImpl implements AccountService  {
     private AccountDAO accountDAO;
 
     @Override
+    public Optional<AccountDTO> getAccountByUsername(String username) {
+        return accountDAO.getAccountByUsername(username);
+    }
+
+    @Override
     @Transactional
     public Optional<List<AccountDTO>> findAll() {
         return accountDAO.findAll();

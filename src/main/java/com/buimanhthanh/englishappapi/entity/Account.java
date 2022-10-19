@@ -48,6 +48,4 @@ public class Account {
     @JoinTable(name = "account_topic",joinColumns = @JoinColumn(name = "account_id"),
                 inverseJoinColumns = @JoinColumn(name = "topic_id"))
     private Set<Topic> topics;
-
-
 }
